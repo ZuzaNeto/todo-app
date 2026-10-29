@@ -19,3 +19,23 @@
   ;; @todos-db: "olha dentro" da caixa (lê o valor).
   ;; (vals): pega apenas os valores do mapa (ignora as chaves/IDs).
   (vec (vals @todos-db)))
+
+(defn create-todo
+  "Cria um novo 'todo', salva no banco e o retorna."
+  [todo-data] ;; ex: {:title "Minha tarefa"}
+  (let [;; 1. Gera o próximo ID: swap! incrementa a caixa e DEVOLVE
+        ;;    o novo valor, tudo em um único passo atômico.
+        id (swap! next-id inc)
+
+        ;; 2. Cria um NOVO mapa imutável com os dados completos
+        new-todo (assoc todo-data
+                        :id id
+                        :completed false
+                        :created-at (str (java.time.Instant/now)))]
+
+    ;; 3. (swap!): "troca" o conteúdo da caixa 'todos-db',
+    ;;    aplicando 'assoc' ao mapa antigo para criar um novo.
+    (swap! todos-db assoc id new-todo)
+
+    ;; 4. Retorna o 'todo' recém-criado.
+    new-todo))
