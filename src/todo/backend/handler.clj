@@ -1,13 +1,18 @@
 (ns todo.backend.handler
-  "Este namespace define nossas 'funções de resposta' (Handlers).")
+  "Este namespace define nossas 'funções de resposta' (Handlers)."
+  (:require [todo.backend.db :as db]
+            [clojure.string :as str]))
 
 (defn hello-handler
   "Nosso primeiro handler. Ele apenas diz 'Olá, Mundo!'"
+  [_request]
+  {:status 200
+   :body "Hello, World!"})
 
-  [_request] ;; 1. O handler recebe a 'request' como argumento.
-             ;;    Usamos '_' para sinalizar que, nesta função,
-             ;;    vamos ignorar esse argumento.
-
-  ;; 2. O handler retorna um mapa de 'response'.
-  {:status 200            ;; :status 200 é o código HTTP para "OK"
-   :body "Hello, World!"}) ;; :body é o conteúdo enviado ao navegador
+;; --- Handler para Listar Todos ---
+(defn list-todos-handler
+  "Handler para a rota GET /api/todos."
+  [_request]
+  ;; Chama nossa função de banco e a coloca no 'body'
+  {:status 200
+   :body {:todos (db/get-all-todos)}})
