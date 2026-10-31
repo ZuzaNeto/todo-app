@@ -6,8 +6,7 @@
             [cljs.core.async.interop :refer-macros [<p!]]))
 
 ;; --- O "Cérebro" Reativo ---
-(defonce app-state (r/atom {:next-id 1
-                            :input-text ""
+(defonce app-state (r/atom {:input-text ""
                             :todos []}))
 
 ;; --- A URL base da nossa API (o backend, porta 3000) ---
@@ -34,19 +33,21 @@
       (catch js/Error e
         (swap! app-state assoc :error (.-message e) :loading false)))))
 
-;; --- A Lógica de Negócios (Local) ---
-(defn adicionar-todo-local []
-  (swap! app-state
-         (fn [estado-atual]
-           (let [novo-titulo (:input-text estado-atual)
-                 novo-id (:next-id estado-atual)]
-             (if (str/blank? novo-titulo)
-               estado-atual
-               {:next-id (inc novo-id)
-                :input-text ""
-                :todos (conj (:todos estado-atual)
-                             {:id novo-id
-                              :title novo-titulo})})))))
+;; --- Cria um "todo" via API (POST) ---
+(defn create-todo [todo-data]
+  (swap! app-state assoc :loading true :error nil)
+  (go
+    (try
+      (<p! (fetch-json (str api-url "/todos")
+                       {:method "POST"
+                        :headers {"Content-Type" "application/json"}
+                        ;; Converte o mapa Clojure em uma string JSON
+                        :body (js/JSON.stringify (clj->js todo-data))}))
+
+      ;; Se o POST funcionou, recarregamos a lista
+      (get-todos)
+      (catch js/Error e
+        (swap! app-state assoc :error (.-message e) :loading false)))))
 
 (defn todo-form []
   [:div.todo-input
@@ -57,8 +58,10 @@
      :on-change #(swap! app-state assoc :input-text (-> % .-target .-value))}]
 
    [:button
-    {:on-click adicionar-todo-local}
-    "Adicionar (Local)"]])
+    {:on-click (fn []
+                 (create-todo {:title (:input-text @app-state)})
+                 (swap! app-state assoc :input-text ""))} ;; Limpa o input
+    "Adicionar"]])
 
 (defn todo-list []
   [:ul.todo-list
@@ -69,8 +72,9 @@
 
 (defn app []
   [:div.todo-app
-   [:h1 "Todo App (Somente Frontend)"]
-   [:p "Isto é 100% local. Recarregue (F5) para ver os dados sumirem."]
+   [:h1 "Todo App"]
+   [:p "Conectado à API. Os dados sobrevivem ao F5!"]
+
    [todo-form]
    [todo-list]])
 
