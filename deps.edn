@@ -8,6 +8,7 @@
   ring/ring-jetty-adapter {:mvn/version "1.12.2"}
   ring/ring-json          {:mvn/version "0.5.1"}
   metosin/reitit-ring     {:mvn/version "0.7.0"}
+  ring-cors/ring-cors     {:mvn/version "0.1.13"} ;; <- ADICIONE ESTA LINHA
 
   ;; --- Dependências do Frontend ---
   thheller/shadow-cljs    {:mvn/version "2.28.23"}
