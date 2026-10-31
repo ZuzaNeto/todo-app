@@ -2,32 +2,37 @@
   (:require [reagent.core :as r]
             [reagent.dom.client :as rdom]))
 
-;; --- 1. O "Cérebro" (o r/atom) ---
-;;
-;; (defonce) garante que o valor (o 0) NÃO seja resetado
-;; toda vez que o "hot-reload" do shadow-cljs recompilar.
-(defonce app-state (r/atom 0))
+;; --- 1. Nossos Componentes (Estáticos) ---
 
-;; --- 2. O Componente ---
-(defn counter-app []
-  [:div
-   [:h1 "Entendendo o 'r/atom'"]
+;; O Formulário (não faz nada ainda)
+(defn todo-form []
+  [:div.todo-input
+   [:input {:type "text" :placeholder "O que precisa ser feito?"}]
+   [:button "Adicionar (Desligado)"]])
 
-   ;; (Leitura): "lemos" o valor dentro da caixa usando '@'
-   [:p "O valor atual do contador é: " @app-state]
+;; A Lista (recebe uma lista de "todos" como argumento)
+(defn todo-list [todos] ;; "todos" é um argumento!
+  [:ul.todo-list
+   (for [todo todos]
+     ^{:key (:id todo)}
+     [:li.todo-item
+      (:title todo)])])
 
-   [:button
-    ;; (Escrita): no clique, usamos 'swap!' para "trocar"
-    ;; o valor na caixa, aplicando a função 'inc'.
-    {:on-click #(swap! app-state inc)}
-    "Clique para Incrementar"]
+;; O App Principal (que monta tudo)
+(defn app []
+  [:div.todo-app
+   [:h1 "Todo App (Estático)"]
+   [:p "Isto é apenas o visual. Nada funciona ainda."]
 
-   [:button
-    {:on-click #(reset! app-state 0)}
-    "Resetar"]])
+   ;; 1. Renderiza o formulário
+   [todo-form]
 
-;; --- 3. A Inicialização ---
+   ;; 2. Renderiza a lista, passando "dados falsos"
+   [todo-list [{:id 1 :title "Meu primeiro item (falso)"}
+               {:id 2 :title "Meu segundo item (falso)"}]]])
+
+;; --- 2. A Inicialização ---
 (defn ^:export init []
-  (println "Frontend 'Contador' inicializado...")
+  (println "Frontend 'Todo Estático' inicializado...")
   (let [root (rdom/create-root (js/document.getElementById "app"))]
-    (.render root (r/as-element [counter-app]))))
+    (.render root (r/as-element [app]))))
