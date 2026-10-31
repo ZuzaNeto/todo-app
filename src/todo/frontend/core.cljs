@@ -1,24 +1,33 @@
 (ns todo.frontend.core
-  ;; Requeremos o "coração" do Reagent (para 'r/atom' e 'r/as-element')
   (:require [reagent.core :as r]
-            ;; E o DOM do Reagent (para 'create-root', API do React 18+)
             [reagent.dom.client :as rdom]))
 
-;; --- 1. O Componente ---
-;; Um componente em Reagent é apenas uma função
-;; que retorna "Hiccup" (HTML escrito como vetores CLJS).
+;; --- 1. O "Cérebro" (o r/atom) ---
 ;;
-;; [:h1 "Olá"] -> <h1>Olá</h1>
-(defn hello-world []
-  [:div
-   [:h1 "Olá, Alunos!"]
-   [:p "Nossa aplicação ClojureScript está funcionando."]])
+;; (defonce) garante que o valor (o 0) NÃO seja resetado
+;; toda vez que o "hot-reload" do shadow-cljs recompilar.
+(defonce app-state (r/atom 0))
 
-;; --- 2. A Inicialização (React 18+) ---
-;; Esta é a função que o shadow-cljs.edn chama.
-;; Ela "monta" nosso componente [hello-world]
-;; no <div id="app"> do nosso index.html.
+;; --- 2. O Componente ---
+(defn counter-app []
+  [:div
+   [:h1 "Entendendo o 'r/atom'"]
+
+   ;; (Leitura): "lemos" o valor dentro da caixa usando '@'
+   [:p "O valor atual do contador é: " @app-state]
+
+   [:button
+    ;; (Escrita): no clique, usamos 'swap!' para "trocar"
+    ;; o valor na caixa, aplicando a função 'inc'.
+    {:on-click #(swap! app-state inc)}
+    "Clique para Incrementar"]
+
+   [:button
+    {:on-click #(reset! app-state 0)}
+    "Resetar"]])
+
+;; --- 3. A Inicialização ---
 (defn ^:export init []
-  (println "Frontend inicializado...")
+  (println "Frontend 'Contador' inicializado...")
   (let [root (rdom/create-root (js/document.getElementById "app"))]
-    (.render root (r/as-element [hello-world]))))
+    (.render root (r/as-element [counter-app]))))
