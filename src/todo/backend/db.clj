@@ -59,3 +59,14 @@
     WHERE id = ?
     RETURNING *"
                               id]))
+
+(defn delete-todo!
+  "Remove um todo do banco. Retorna o todo removido, ou nil se não existir."
+  [id]
+  ;; RETURNING * aqui nos devolve a linha que acabou de ser apagada.
+  ;; É perfeito para o handler saber se o id existia (nil = não existia).
+  (jdbc/execute-one! db-spec ["
+    DELETE FROM todos
+    WHERE id = ?
+    RETURNING *"
+                              id]))

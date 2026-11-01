@@ -51,3 +51,12 @@
     (if-let [updated-todo (db/toggle-todo! id)]
       {:status 200 :body updated-todo}
       {:status 404 :body {:error "Todo não encontrado"}})))
+
+;; --- Handler para Deletar um Todo ---
+(defn delete-todo-handler
+  "Handler para a rota DELETE /api/todos/:id."
+  [request]
+  (let [id (Integer/parseInt (get-in request [:path-params :id]))]
+    (if-let [deleted-todo (db/delete-todo! id)]
+      {:status 200 :body deleted-todo}
+      {:status 404 :body {:error "Todo não encontrado"}})))
