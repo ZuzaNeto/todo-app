@@ -5,7 +5,8 @@
             [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             [ring.middleware.cors :refer [wrap-cors]]
-            [todo.backend.handler :as handler])
+            [todo.backend.handler :as handler]
+            [todo.backend.db :as db])
   (:gen-class))
 
 (def app-routes
@@ -22,12 +23,8 @@
    app-routes
    (ring/create-default-handler)
    {:middleware [[wrap-cors
-                  ;; Em quais origens o backend confia:
                   :access-control-allow-origin [#"http://localhost:8000"]
-                  ;; Quais métodos HTTP são permitidos:
                   :access-control-allow-methods [:get :post :put :delete]
-                  ;; Quais headers o frontend pode enviar:
-                  ;; (necessário para o POST com Content-Type: application/json)
                   :access-control-allow-headers ["Content-Type"]]
 
                  wrap-json-response
@@ -41,4 +38,5 @@
 
 (defn -main [& args]
   (let [port (Integer/parseInt (or (first args) "3000"))]
+    (db/initialize-database!) ;; Garante que a tabela exista
     (start-server port)))
