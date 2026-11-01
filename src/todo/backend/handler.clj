@@ -38,3 +38,16 @@
       ;; Erro de validação.
       {:status 400 ;; "Bad Request"
        :body {:error "O 'título' (title) é obrigatório"}})))
+
+;; --- Handler para Alternar (toggle) um Todo ---
+(defn toggle-todo-handler
+  "Handler para a rota POST /api/todos/:id/toggle."
+  [request]
+  ;; O Reitit coloca os parâmetros da URL (o :id de "/todos/:id/toggle")
+  ;; em :path-params, sempre como STRINGS. Convertemos para inteiro.
+  (let [id (Integer/parseInt (get-in request [:path-params :id]))]
+    ;; execute-one! retorna nil se nenhuma linha foi afetada
+    ;; (id inexistente) -> respondemos 404.
+    (if-let [updated-todo (db/toggle-todo! id)]
+      {:status 200 :body updated-todo}
+      {:status 404 :body {:error "Todo não encontrado"}})))
