@@ -1,4 +1,4 @@
-# Todo List — Clojure/ClojureScript
+# 📝 Todo List — Clojure/ClojureScript
 
 **Tutorial original:** [Tutorial Clojure/ClojureScript: Construindo uma Aplicação Persistente e Reativa](https://lambdageo-edu.github.io/lambdageo-tutorials/clojure/)
 
@@ -55,11 +55,13 @@ Aplicação full-stack de lista de tarefas (Todo List), construída de forma inc
 | `POST`   | `/api/todos/:id/toggle` | Alterna o status feito/não feito     |
 | `DELETE` | `/api/todos/:id`        | Remove uma tarefa                    |
 
+## Aba Rede do navegador
+
+![Aba Rede mostrando a requisição que carregou a página](docs/aba-rede.png)
+
 ## 👥 Créditos
 
-**Aluno:**
-
-**José Nunes de Sousa Neto** — Matrícula: **20250071231**
+**Aluno:** José Nunes de Sousa Neto — Matrícula: **20250071231**
 
 **Disciplina:** EECP0047 - TÓPICOS EM ENGENHARIA DA COMPUTAÇÃO II - INTRODUÇÃO A PROGRAMAÇÃO FUNCIONAL 
 
