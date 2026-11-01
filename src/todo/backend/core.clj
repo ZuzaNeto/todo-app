@@ -16,7 +16,11 @@
 
     ["/todos"
      {:get  {:handler handler/list-todos-handler}
-      :post {:handler handler/create-todo-handler}}]]))
+      :post {:handler handler/create-todo-handler}}]
+
+    ;; --- NOVA ROTA ---
+    ["/todos/:id/toggle"
+     {:post {:handler handler/toggle-todo-handler}}]]))
 
 (def app
   (ring/ring-handler
