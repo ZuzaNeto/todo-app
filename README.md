@@ -18,11 +18,48 @@ Aplicação full-stack de lista de tarefas (Todo List), construída de forma inc
 | [Clojure CLI](https://clojure.org/guides/install_clojure) (`clj`) | 1.11+         |
 | Node.js (`node` / `npm`)                                          | 18+           |
 
+## Como Rodar
+
+1. **Clone o repositório e instale as dependências do frontend:**
+
+   ```bash
+   git clone [https://github.com/ZuzaNeto/todo-app.git](https://github.com/ZuzaNeto/todo-app.git)
+   cd todo-app
+   npm install
+   ```
+
+2. **Terminal 1 — Backend (API na porta 3000):**
+
+   ```bash
+   clj -M:run
+   ```
+
+   Na primeira execução, as dependências Clojure serão baixadas e o banco `prod.db` será criado automaticamente.
+
+3. **Terminal 2 — Frontend (porta 8000):**
+
+   ```bash
+   npx shadow-cljs watch app
+   ```
+
+   Aguarde a mensagem `Build completed`.
+
+4. **Abra o navegador em:** [http://localhost:8000](http://localhost:8000)
+
+## Endpoints da API
+
+| Método   | Rota                    | Descrição                            |
+| -------- | ----------------------- | ------------------------------------ |
+| `GET`    | `/api/todos`            | Lista todas as tarefas               |
+| `POST`   | `/api/todos`            | Cria uma tarefa (`{"title": "..."}`) |
+| `POST`   | `/api/todos/:id/toggle` | Alterna o status feito/não feito     |
+| `DELETE` | `/api/todos/:id`        | Remove uma tarefa                    |
+
 ## 👥 Créditos
 
-**Alunos:**
+**Aluno:**
 
-- **José Nunes de Sousa Neto** — Matrícula: **20250071231**
+**José Nunes de Sousa Neto** — Matrícula: **20250071231**
 
 **Disciplina:** EECP0047 - TÓPICOS EM ENGENHARIA DA COMPUTAÇÃO II - INTRODUÇÃO A PROGRAMAÇÃO FUNCIONAL 
 
