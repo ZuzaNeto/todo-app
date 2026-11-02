@@ -23,7 +23,7 @@ Aplicação full-stack de lista de tarefas (Todo List), construída de forma inc
 1. **Clone o repositório e instale as dependências do frontend:**
 
    ```bash
-   git clone [https://github.com/ZuzaNeto/todo-app.git](https://github.com/ZuzaNeto/todo-app.git)
+   git clone https://github.com/ZuzaNeto/todo-app.git
    cd todo-app
    npm install
    ```
