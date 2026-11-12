@@ -3,6 +3,14 @@
   (:require [todo.backend.db :as db]
             [clojure.string :as str]))
 
+(defn- parse-id
+  "Converte o parâmetro :id da URL para inteiro de forma segura."
+  [request]
+  (try
+    (some-> (get-in request [:path-params :id]) Integer/parseInt)
+    (catch NumberFormatException _
+      nil)))
+
 (defn hello-handler
   "Nosso primeiro handler. Ele apenas diz 'Olá, Mundo!'"
   [_request]
@@ -13,7 +21,6 @@
 (defn list-todos-handler
   "Handler para a rota GET /api/todos."
   [_request]
-  ;; Chama nossa função de banco e a coloca no 'body'
   {:status 200
    :body {:todos (db/get-all-todos)}})
 
@@ -21,42 +28,31 @@
 (defn create-todo-handler
   "Handler para a rota POST /api/todos."
   [request]
-  ;; :body é um mapa Clojure que o *middleware*
-  ;; (que adicionaremos no próximo passo) vai criar para nós
-  ;; a partir do JSON que o cliente enviar.
   (let [todo-data (:body request)
-        title (:title todo-data)]
-
-    ;; É uma boa prática validar os dados que chegam.
+        title (some-> (:title todo-data) str/trim)]
     (if (and title (not (str/blank? title)))
-      ;; Sucesso! Os dados são válidos.
-      (let [new-todo (db/create-todo todo-data)]
-        ;; :status 201 = "Created"
+      (let [new-todo (db/create-todo (assoc todo-data :title title))]
         {:status 201
          :body new-todo})
-
-      ;; Erro de validação.
-      {:status 400 ;; "Bad Request"
+      {:status 400
        :body {:error "O 'título' (title) é obrigatório"}})))
 
 ;; --- Handler para Alternar (toggle) um Todo ---
 (defn toggle-todo-handler
   "Handler para a rota POST /api/todos/:id/toggle."
   [request]
-  ;; O Reitit coloca os parâmetros da URL (o :id de "/todos/:id/toggle")
-  ;; em :path-params, sempre como STRINGS. Convertemos para inteiro.
-  (let [id (Integer/parseInt (get-in request [:path-params :id]))]
-    ;; execute-one! retorna nil se nenhuma linha foi afetada
-    ;; (id inexistente) -> respondemos 404.
+  (if-let [id (parse-id request)]
     (if-let [updated-todo (db/toggle-todo! id)]
       {:status 200 :body updated-todo}
-      {:status 404 :body {:error "Todo não encontrado"}})))
+      {:status 404 :body {:error "Todo não encontrado"}})
+    {:status 400 :body {:error "ID inválido"}}))
 
 ;; --- Handler para Deletar um Todo ---
 (defn delete-todo-handler
   "Handler para a rota DELETE /api/todos/:id."
   [request]
-  (let [id (Integer/parseInt (get-in request [:path-params :id]))]
+  (if-let [id (parse-id request)]
     (if-let [deleted-todo (db/delete-todo! id)]
       {:status 200 :body deleted-todo}
-      {:status 404 :body {:error "Todo não encontrado"}})))
+      {:status 404 :body {:error "Todo não encontrado"}})
+    {:status 400 :body {:error "ID inválido"}}))
