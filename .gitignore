@@ -12,9 +12,10 @@ Thumbs.db
 # Pasta de build padrão
 /target/
 
-# Cache de dependências do Clojure CLI
+# Cache de dependências do Clojure CLI e LSP
 .cpcache/
 .clj-kondo/
+.lsp/
 .cider-repl-history
 
 # --- shadow-cljs (Frontend) ---
@@ -37,5 +38,7 @@ Thumbs.db
 
 # --- Banco de Dados (usado a partir da Fase 5) ---
 *.db
+*.db-shm
+*.db-wal
 *.sqlite
 *.sqlite3
