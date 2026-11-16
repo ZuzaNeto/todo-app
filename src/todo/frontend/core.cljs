@@ -73,18 +73,26 @@
       (catch js/Error e
         (swap! app-state assoc :error (.-message e) :loading false)))))
 
+(defn submit-input! []
+  (let [title (str/trim (or (:input-text @app-state) ""))]
+    (if (str/blank? title)
+      (swap! app-state assoc :error "Digite um título para a tarefa antes de adicionar.")
+      (do
+        (create-todo {:title title})
+        (swap! app-state assoc :input-text "" :error nil)))))
+
 (defn todo-form []
   [:div.todo-input
    [:input
     {:type "text"
      :placeholder "O que precisa ser feito?"
      :value (:input-text @app-state)
-     :on-change #(swap! app-state assoc :input-text (-> % .-target .-value))}]
+     :on-change #(swap! app-state assoc :input-text (-> % .-target .-value))
+     :on-key-down #(when (= (.-key %) "Enter")
+                     (submit-input!))}]
 
    [:button
-    {:on-click (fn []
-                 (create-todo {:title (:input-text @app-state)})
-                 (swap! app-state assoc :input-text ""))} ;; Limpa o input
+    {:on-click submit-input!}
     "Adicionar"]])
 
 (defn todo-list []
