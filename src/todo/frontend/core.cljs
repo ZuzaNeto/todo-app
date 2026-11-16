@@ -108,9 +108,10 @@
 
       [:span.todo-title (:todos/title todo)]
 
-      ;; --- O BOTÃO DE DELETAR (agora de verdade!) ---
+      ;; --- O BOTÃO DE DELETAR (com confirmação!) ---
       [:button.delete-btn
-       {:on-click #(delete-todo (:todos/id todo))}
+       {:on-click #(when (js/confirm "Remover esta tarefa?")
+                     (delete-todo (:todos/id todo)))}
        "X"]])])
 
 (defn app []
