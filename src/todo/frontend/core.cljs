@@ -106,24 +106,37 @@
        {:on-click #(swap! app-state assoc :error nil)}
        "×"]])])
 
+(defn todo-summary []
+  (let [todos (:todos @app-state)
+        total (count todos)
+        done (count (filter #(= 1 (:todos/completed %)) todos))
+        pending (- total done)]
+    (when (pos? total)
+      [:div.todo-summary
+       [:span (str "Total: " total)]
+       [:span (str "Pendentes: " pending)]
+       [:span (str "Concluídas: " done)]])))
+
 (defn todo-list []
-  [:ul.todo-list
-   (for [todo (:todos @app-state)]
-     ^{:key (:todos/id todo)}
-     [:li.todo-item {:class (when (= 1 (:todos/completed todo)) "completed")}
+  (let [todos (:todos @app-state)]
+    (if (empty? todos)
+      [:p.empty-msg "Nenhuma tarefa por aqui ainda. Adicione sua primeira tarefa acima!"]
+      [:ul.todo-list
+       (for [todo todos]
+         ^{:key (:todos/id todo)}
+         [:li.todo-item {:class (when (= 1 (:todos/completed todo)) "completed")}
 
-      [:input.todo-checkbox
-       {:type "checkbox"
-        :checked (not= 0 (:todos/completed todo))
-        :on-change #(toggle-todo (:todos/id todo))}]
+          [:input.todo-checkbox
+           {:type "checkbox"
+            :checked (not= 0 (:todos/completed todo))
+            :on-change #(toggle-todo (:todos/id todo))}]
 
-      [:span.todo-title (:todos/title todo)]
+          [:span.todo-title (:todos/title todo)]
 
-      ;; --- O BOTÃO DE DELETAR (com confirmação!) ---
-      [:button.delete-btn
-       {:on-click #(when (js/confirm "Remover esta tarefa?")
-                     (delete-todo (:todos/id todo)))}
-       "X"]])])
+          [:button.delete-btn
+           {:on-click #(when (js/confirm "Remover esta tarefa?")
+                         (delete-todo (:todos/id todo)))}
+           "X"]])])))
 
 (defn app []
   [:div.todo-app
@@ -132,7 +145,8 @@
 
    [todo-form]
    [status-banners]
-   [todo-list]])
+   [todo-list]
+   [todo-summary]])
 
 (defn ^:export init []
   (println "Frontend inicializado...")
