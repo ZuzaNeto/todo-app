@@ -1,23 +1,22 @@
 {
   "name": "todo-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "Aplicação Todo List Full-Stack em Clojure e ClojureScript",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "watch": "shadow-cljs watch app",
+    "compile": "shadow-cljs compile app",
+    "release": "shadow-cljs release app"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ZuzaNeto/todo-app.git"
-  },
-  "keywords": [],
+  "keywords": [
+    "clojure",
+    "clojurescript",
+    "reagent",
+    "reitit",
+    "sqlite"
+  ],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/ZuzaNeto/todo-app/issues"
-  },
-  "homepage": "https://github.com/ZuzaNeto/todo-app#readme",
   "dependencies": {
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
