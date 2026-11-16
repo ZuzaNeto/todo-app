@@ -1,4 +1,8 @@
-# 📝 Todo List — Clojure/ClojureScript
+# Todo List — Clojure/ClojureScript
+
+**Alunos (Dupla):**
+- José Nunes de Sousa Neto
+- Leônidas Ferreira da Silva Serra
 
 **Tutorial original:** [Tutorial Clojure/ClojureScript: Construindo uma Aplicação Persistente e Reativa](https://lambdageo-edu.github.io/lambdageo-tutorials/clojure/)
 
@@ -8,7 +12,13 @@ Aplicação full-stack de lista de tarefas (Todo List), construída de forma inc
 
 - **Backend:** Clojure, com [Ring](https://github.com/ring-clojure/ring) (servidor Jetty) e [Reitit](https://github.com/metosin/reitit) (roteamento), expondo uma API REST com CRUD completo.
 - **Banco de dados:** SQLite, acessado via [next.jdbc](https://github.com/seancorfield/next-jdbc), com persistência real em disco (`prod.db`).
-- **Frontend:** ClojureScript com [Reagent](https://github.com/reagent-project/reagent) (React) e [Shadow-CLJS](https://github.com/thheller/shadow-cljs), consumindo a API via `fetch`.
+- **Frontend:** ClojureScript com [Reagent](https://github.com/reagent-project/reagent) (React 19) e [Shadow-CLJS](https://github.com/thheller/shadow-cljs), consumindo a API de forma assíncrona via `fetch` e `core.async`.
+
+### Funcionalidades Extras Implementadas
+- **Filtros reativos no Frontend:** visualização por tarefas *Todas*, *Ativas* e *Concluídas*.
+- **Feedback visual:** indicadores de carregamento (`:loading`) e banners de erro (`:error`).
+- **UX aprimorada:** envio de formulário com tecla `Enter`, confirmação antes de excluir (`js/confirm`) e contador de tarefas no rodapé.
+- **Validação robusta no Backend:** tratamento seguro de IDs na URL (`NumberFormatException`) e sanitização de strings (`trim`).
 
 ## Pré-requisitos
 
@@ -50,33 +60,8 @@ Aplicação full-stack de lista de tarefas (Todo List), construída de forma inc
 
 | Método   | Rota                    | Descrição                            |
 | -------- | ----------------------- | ------------------------------------ |
+| `GET`    | `/api/hello`            | Rota de teste ("Hello, World!")      |
 | `GET`    | `/api/todos`            | Lista todas as tarefas               |
 | `POST`   | `/api/todos`            | Cria uma tarefa (`{"title": "..."}`) |
 | `POST`   | `/api/todos/:id/toggle` | Alterna o status feito/não feito     |
 | `DELETE` | `/api/todos/:id`        | Remove uma tarefa                    |
-
-## Aba Rede do navegador
-
-![Aba Rede mostrando a requisição que carregou a página](docs/aba-rede.png)
-
-## 👥 Créditos
-
-**Aluno:** José Nunes de Sousa Neto — Matrícula: **20250071231**
-
-**Disciplina:** EECP0047 - TÓPICOS EM ENGENHARIA DA COMPUTAÇÃO II - INTRODUÇÃO A PROGRAMAÇÃO FUNCIONAL 
-
-**Professor:** Prof. Dr. Sergio Souza Costa  
-
-**Instituição:** UFMA — Universidade Federal do Maranhão  
-
-**Semestre:** 2026.2
-
----
-
-<div align="center">
-
-**Este repositório possui fins acadêmicos.**
-
-</div>
-
----
