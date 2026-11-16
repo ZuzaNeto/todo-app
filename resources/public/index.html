@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -23,12 +23,18 @@
       h1 {
         color: #333;
         text-align: center;
+        margin-bottom: 10px;
+      }
+      .todo-app > p {
+        text-align: center;
+        color: #666;
         margin-bottom: 25px;
+        font-size: 14px;
       }
       .todo-input {
         display: flex;
         gap: 10px;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
       }
       .todo-input input[type="text"] {
         flex: 1;
@@ -36,6 +42,56 @@
         border: 1px solid #ddd;
         border-radius: 4px;
         font-size: 16px;
+      }
+      .todo-filters {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 18px;
+      }
+      .filter-btn {
+        background-color: #e9ecef;
+        color: #495057;
+        font-size: 13px;
+        padding: 6px 14px;
+      }
+      .filter-btn:hover {
+        background-color: #dee2e6;
+      }
+      .filter-btn.active {
+        background-color: #007bff;
+        color: white;
+      }
+      .status-area {
+        margin-bottom: 12px;
+      }
+      .loading-banner {
+        background-color: #e7f1ff;
+        color: #084298;
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-size: 14px;
+        margin-bottom: 8px;
+      }
+      .error-banner {
+        background-color: #f8d7da;
+        color: #842029;
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .close-err {
+        background: transparent;
+        color: #842029;
+        font-weight: bold;
+        padding: 0 6px;
+        font-size: 18px;
+      }
+      .close-err:hover {
+        background: rgba(0, 0, 0, 0.05);
       }
       .todo-list {
         list-style: none;
@@ -50,11 +106,9 @@
         border-radius: 4px;
         transition: background-color 0.3s;
       }
-      /* O título ocupa todo o espaço entre o checkbox e o botão X */
       .todo-title {
         flex: 1;
       }
-      /* O botão "Adicionar" */
       button {
         padding: 10px 15px;
         background-color: #007bff;
@@ -68,7 +122,6 @@
       button:hover {
         background-color: #0056b3;
       }
-      /* O botão de deletar (X) */
       .delete-btn {
         background-color: #dc3545;
         font-size: 12px;
@@ -77,7 +130,6 @@
       .delete-btn:hover {
         background-color: #c82333;
       }
-      /* Item concluído */
       .completed {
         opacity: 0.6;
         background-color: #f1f1f1;
@@ -86,6 +138,21 @@
       .todo-checkbox {
         margin-right: 10px;
         cursor: pointer;
+      }
+      .empty-msg {
+        text-align: center;
+        color: #888;
+        font-style: italic;
+        padding: 20px 0;
+      }
+      .todo-summary {
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid #eee;
+        margin-top: 15px;
+        padding-top: 12px;
+        font-size: 13px;
+        color: #666;
       }
     </style>
   </head>
