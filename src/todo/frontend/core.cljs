@@ -7,7 +7,10 @@
 
 ;; --- O "Cérebro" Reativo ---
 (defonce app-state (r/atom {:input-text ""
-                            :todos []}))
+                            :todos []
+                            :filter :all
+                            :loading false
+                            :error nil}))
 
 ;; --- A URL base da nossa API (o backend, porta 3000) ---
 (def api-url "http://localhost:3000/api")
@@ -106,6 +109,30 @@
        {:on-click #(swap! app-state assoc :error nil)}
        "×"]])])
 
+(defn todo-filters []
+  (let [current-filter (:filter @app-state)]
+    [:div.todo-filters
+     [:button.filter-btn
+      {:class (when (= current-filter :all) "active")
+       :on-click #(swap! app-state assoc :filter :all)}
+      "Todas"]
+     [:button.filter-btn
+      {:class (when (= current-filter :active) "active")
+       :on-click #(swap! app-state assoc :filter :active)}
+      "Ativas"]
+     [:button.filter-btn
+      {:class (when (= current-filter :completed) "active")
+       :on-click #(swap! app-state assoc :filter :completed)}
+      "Concluídas"]]))
+
+(defn filtered-todos []
+  (let [todos (:todos @app-state)
+        current-filter (:filter @app-state)]
+    (case current-filter
+      :active (filter #(zero? (:todos/completed %)) todos)
+      :completed (filter #(= 1 (:todos/completed %)) todos)
+      todos)))
+
 (defn todo-summary []
   (let [todos (:todos @app-state)
         total (count todos)
@@ -118,9 +145,9 @@
        [:span (str "Concluídas: " done)]])))
 
 (defn todo-list []
-  (let [todos (:todos @app-state)]
+  (let [todos (filtered-todos)]
     (if (empty? todos)
-      [:p.empty-msg "Nenhuma tarefa por aqui ainda. Adicione sua primeira tarefa acima!"]
+      [:p.empty-msg "Nenhuma tarefa encontrada para este filtro."]
       [:ul.todo-list
        (for [todo todos]
          ^{:key (:todos/id todo)}
@@ -144,6 +171,7 @@
    [:p "Conectado à API. Os dados sobrevivem ao F5!"]
 
    [todo-form]
+   [todo-filters]
    [status-banners]
    [todo-list]
    [todo-summary]])
