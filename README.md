@@ -1,9 +1,5 @@
 # Todo List — Clojure/ClojureScript
 
-**Alunos (Dupla):**
-- José Nunes de Sousa Neto
-- Leônidas Ferreira da Silva Serra
-
 **Tutorial original:** [Tutorial Clojure/ClojureScript: Construindo uma Aplicação Persistente e Reativa](https://lambdageo-edu.github.io/lambdageo-tutorials/clojure/)
 
 ## Descrição
@@ -65,3 +61,29 @@ Aplicação full-stack de lista de tarefas (Todo List), construída de forma inc
 | `POST`   | `/api/todos`            | Cria uma tarefa (`{"title": "..."}`) |
 | `POST`   | `/api/todos/:id/toggle` | Alterna o status feito/não feito     |
 | `DELETE` | `/api/todos/:id`        | Remove uma tarefa                    |
+
+## 👥 Créditos
+
+**Alunos:**
+
+- **José Nunes de Sousa Neto** — Matrícula: **20250071231**
+- **Leônidas Ferreira da Silva Serra** — Matrícula: **20250013514**
+
+**Disciplina:** EECP0047 - TÓPICOS EM ENGENHARIA DA COMPUTAÇÃO II - INTRODUÇÃO A PROGRAMAÇÃO FUNCIONAL 
+
+**Professor:** Prof. Dr. Sergio Souza Costa  
+
+**Instituição:** UFMA — Universidade Federal do Maranhão  
+
+**Semestre:** 2026.2
+
+---
+
+<div align="center">
+
+**Este repositório possui fins acadêmicos.**
+
+</div>
+
+---
+
