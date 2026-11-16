@@ -95,6 +95,17 @@
     {:on-click submit-input!}
     "Adicionar"]])
 
+(defn status-banners []
+  [:div.status-area
+   (when (:loading @app-state)
+     [:div.loading-banner "Sincronizando com o servidor..."])
+   (when-let [err (:error @app-state)]
+     [:div.error-banner
+      [:span (str "Erro: " err)]
+      [:button.close-err
+       {:on-click #(swap! app-state assoc :error nil)}
+       "×"]])])
+
 (defn todo-list []
   [:ul.todo-list
    (for [todo (:todos @app-state)]
@@ -120,6 +131,7 @@
    [:p "Conectado à API. Os dados sobrevivem ao F5!"]
 
    [todo-form]
+   [status-banners]
    [todo-list]])
 
 (defn ^:export init []
