@@ -2,6 +2,10 @@
 
 **Tutorial original:** [Tutorial Clojure/ClojureScript: Construindo uma Aplicação Persistente e Reativa](https://lambdageo-edu.github.io/lambdageo-tutorials/clojure/)
 
+## 🎥 Vídeo de apresentação
+
+**▶️ [Assista aqui](https://youtu.be/4jiKf04w_gE?is=gQDOMJl7rwfsJ7QC)**
+
 ## Descrição
 
 Aplicação full-stack de lista de tarefas (Todo List), construída de forma incremental para estudar a arquitetura de aplicações funcionais modernas:
